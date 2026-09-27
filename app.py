@@ -37,6 +37,13 @@ PAYMENT_MAP = {"Credit Card": 1, "Cash": 2, "No Charge": 3, "Dispute": 4}
 DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
         "Saturday", "Sunday"]
 
+# 12-hour labels shown in the UI, mapped to 24-hour model values.
+HOUR_LABELS = (
+    ["12 AM"] + [f"{h} AM" for h in range(1, 12)]
+    + ["12 PM"] + [f"{h} PM" for h in range(1, 12)]
+)
+HOUR_TO_INT = {label: i for i, label in enumerate(HOUR_LABELS)}
+
 # Fixed trip-context defaults (not exposed as inputs).
 VENDOR_ID = 1
 STORE_AND_FWD_FLAG = 0
@@ -45,17 +52,17 @@ RATECODE_ID = 1
 
 PRESETS = {
     "Short City Hopper": {
-        "trip_distance": 1.2, "passenger_count": 2, "pickup_hour": 13,
+        "trip_distance": 1.2, "passenger_count": 2, "pickup_hour": "1 PM",
         "day_of_week": "Wednesday", "pu_id": 161, "do_id": 237,
         "payment_type": "Credit Card",
     },
     "Airport Trip": {
-        "trip_distance": 18.0, "passenger_count": 2, "pickup_hour": 7,
+        "trip_distance": 18.0, "passenger_count": 2, "pickup_hour": "7 AM",
         "day_of_week": "Friday", "pu_id": 100, "do_id": 132,
         "payment_type": "Credit Card",
     },
     "Late Night Weekend": {
-        "trip_distance": 4.5, "passenger_count": 3, "pickup_hour": 1,
+        "trip_distance": 4.5, "passenger_count": 3, "pickup_hour": "1 AM",
         "day_of_week": "Saturday", "pu_id": 90, "do_id": 100,
         "payment_type": "Cash",
     },
@@ -190,8 +197,9 @@ def main():
                 "Passengers", [1, 2, 3, 4, 5, 6], key="passenger_count",
             )
         with c2:
-            pickup_hour = st.slider(
-                "Pickup Hour (0-23)", 0, 23, 14, key="pickup_hour",
+            pickup_hour = st.selectbox(
+                "Pickup Time", HOUR_LABELS, index=HOUR_LABELS.index("2 PM"),
+                key="pickup_hour",
             )
             day_of_week = st.selectbox(
                 "Day of Week", DAYS, index=DAYS.index("Friday"),
@@ -212,9 +220,10 @@ def main():
 
     if estimate:
         try:
+            hour_24 = HOUR_TO_INT[pickup_hour]
             input_df = build_input_df(
                 float(trip_distance), int(passenger_count),
-                int(pickup_hour), day_of_week,
+                hour_24, day_of_week,
                 int(pu_id), int(do_id), payment_label,
             )
             fare = estimate_fare(input_df, model, preprocessor)
