@@ -348,10 +348,10 @@ streamlit run app.py
 
 ## Notebook
 
-`taxi.ipynb` downloads the January 2025 TLC dataset from its URL on first
+`NYC_Taxi.ipynb` downloads the January 2025 TLC dataset from its URL on first
 run (no data file needed in the repo). Requires `pyarrow` for parquet
 (included in `requirements.txt`).
 
 ```bash
-jupyter notebook taxi.ipynb
+jupyter notebook NYC_Taxi.ipynb
 ```
