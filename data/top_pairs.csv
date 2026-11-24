@@ -1,0 +1,31 @@
+PULocationID,DOLocationID,trips,revenue,avg_total,avg_distance,PickupZone,PickupBorough,DropoffZone,DropoffBorough
+237,236,24487,381853.05,15.594113202924,1.0352190958467757,Upper East Side South,Manhattan,Upper East Side North,Manhattan
+236,237,21483,338896.93,15.775121258669646,1.0205353069869199,Upper East Side North,Manhattan,Upper East Side South,Manhattan
+236,236,17717,241886.13,13.652770220691991,0.6065750409211492,Upper East Side North,Manhattan,Upper East Side North,Manhattan
+237,237,16878,239476.7,14.18868941817751,0.6218769996445077,Upper East Side South,Manhattan,Upper East Side South,Manhattan
+161,237,11233,198118.16,17.637154811715483,1.0471147511795602,Midtown Center,Manhattan,Upper East Side South,Manhattan
+237,161,9957,176097.6,17.685808978608016,1.034517424927187,Upper East Side South,Manhattan,Midtown Center,Manhattan
+161,236,9657,214848.67,22.247972455213837,1.9073086879983432,Midtown Center,Manhattan,Upper East Side North,Manhattan
+239,238,9392,129313.29,13.768450809199319,0.8306846252129472,Upper West Side South,Manhattan,Upper West Side North,Manhattan
+142,239,8981,134384.89,14.963243514085292,0.9743848123816947,Lincoln Square East,Manhattan,Upper West Side South,Manhattan
+239,142,8636,124418.94,14.407010189902733,10.936170680870772,Upper West Side South,Manhattan,Lincoln Square East,Manhattan
+141,236,8607,134253.39,15.598163123039388,1.0674625304984315,Lenox Hill West,Manhattan,Upper East Side North,Manhattan
+186,230,8254,160874.87,19.49053428640659,1.0433074872788952,Penn Station/Madison Sq West,Manhattan,Times Sq/Theatre District,Manhattan
+236,141,8070,131985.51,16.35508178438662,13.168881040892195,Upper East Side North,Manhattan,Lenox Hill West,Manhattan
+236,161,7845,175317.75,22.347705544933078,1.8947278521351179,Upper East Side North,Manhattan,Midtown Center,Manhattan
+237,162,7712,125680.41,16.296733661825726,0.959079356846473,Upper East Side South,Manhattan,Midtown East,Manhattan
+238,239,7690,104857.57,13.635574772431731,0.7893641092327698,Upper West Side North,Manhattan,Upper West Side South,Manhattan
+237,141,7685,110164.8,14.335042290175668,0.7414300585556279,Upper East Side South,Manhattan,Lenox Hill West,Manhattan
+236,239,7523,130509.12,17.348015419380566,1.417891798484647,Upper East Side North,Manhattan,Upper West Side South,Manhattan
+263,236,7241,96755.0,13.362104681673802,0.6724899875707775,Yorkville West,Manhattan,Upper East Side North,Manhattan
+161,161,6991,121436.64,17.370424831926762,0.5480331855242455,Midtown Center,Manhattan,Midtown Center,Manhattan
+186,161,6961,140430.51,20.17389886510559,1.248737250395058,Penn Station/Madison Sq West,Manhattan,Midtown Center,Manhattan
+142,238,6886,119334.27,17.329984025559106,1.4767223351728143,Lincoln Square East,Manhattan,Upper West Side North,Manhattan
+237,142,6885,122789.02,17.83428031953522,1.2600479302832244,Upper East Side South,Manhattan,Lincoln Square East,Manhattan
+239,236,6839,122879.16,17.96741628893113,1.456386898669396,Upper West Side South,Manhattan,Upper East Side North,Manhattan
+141,237,6839,95877.83,14.019276209972219,0.7095554905687965,Lenox Hill West,Manhattan,Upper East Side South,Manhattan
+230,186,6810,122419.33,17.976406754772395,0.9665345080763583,Times Sq/Theatre District,Manhattan,Penn Station/Madison Sq West,Manhattan
+140,236,6801,118521.24,17.42703131892369,1.4996441699750036,Lenox Hill East,Manhattan,Upper East Side North,Manhattan
+162,237,6801,115630.92,17.00204675782973,0.9864093515659461,Midtown East,Manhattan,Upper East Side South,Manhattan
+236,238,6783,116973.16,17.245047913902404,1.3830561698363557,Upper East Side North,Manhattan,Upper West Side North,Manhattan
+142,237,6757,120229.91,17.79338611809975,1.3174145330768092,Lincoln Square East,Manhattan,Upper East Side South,Manhattan
