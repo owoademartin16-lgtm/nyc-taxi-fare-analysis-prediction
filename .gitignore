@@ -1,3 +1,6 @@
+# Local raw data (the dashboard ships only compact aggregates and samples)
+raw/
+
 # Python
 __pycache__/
 *.py[cod]
@@ -14,7 +17,7 @@ env/
 # Streamlit secrets (never commit credentials)
 .streamlit/secrets.toml
 
-# OS / system files
+# macOS / OS
 .DS_Store
 Thumbs.db
 desktop.ini

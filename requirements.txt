@@ -1,12 +1,16 @@
-streamlit==1.64.0
-pandas==2.2.3
-numpy==2.1.3
-joblib==1.4.2
-scikit-learn==1.5.2
-lightgbm==4.7.0
-plotly==7.0.0
-matplotlib
-seaborn
-pyarrow
-jupyter
-ipykernel
+# NYC Taxi Fare Intelligence — runtime dependencies
+#
+#   python3 -m pip install -r requirements.txt
+#   python3 -m streamlit run app.py
+#
+# The model artifacts are shipped. scikit-learn is pinned because the saved
+# preprocessor was serialized with the 1.5/1.6 API; newer releases removed a
+# private class used by the pickle.
+streamlit>=1.49.0,<2
+pandas>=2.2.0,<3
+numpy>=1.26.0,<3
+plotly>=6.0.0,<8
+scikit-learn==1.6.1
+lightgbm==4.6.0
+joblib>=1.4
+pyarrow>=15.0.0

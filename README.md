@@ -338,8 +338,10 @@ Raw taxi data → data cleaning → feature engineering → exploratory data ana
 
 ## Streamlit app
 
-`app.py` is the redesigned fare estimator. It loads `taxi_model.joblib`
-(LightGBM) and `taxi_preprocessor.joblib` from this same folder.
+`app.py` is the multi-page dashboard: Overview, Demand & Time, Fares & Zones,
+Model Lab, Fare Estimator and Insights. It loads the saved model artifacts from
+`models/` (`taxi_model.joblib`, `taxi_preprocessor.joblib`, plus a portable
+scikit-learn fallback) and the compact aggregates from `data/`.
 
 ```bash
 pip install -r requirements.txt
