@@ -1,4 +1,155 @@
-# Nyc taxi fare analysis and prediction
+# NYC Taxi Fare Intelligence
+
+A Streamlit dashboard for New York's yellow-taxi January 2025. It turns the
+official TLC trip file into a dispatch-board view of demand, fares and zones,
+then puts the saved fare model to work in a live estimator.
+
+The dashboard is built around one idea: a taxi meter is a clock, a map and a
+price at the same time. The pages move through those three lenses, then close
+with a single briefing that keeps the strongest signals in one place.
+
+## What's inside
+
+| Page | What it does |
+|---|---|
+| **Overview** | The month in one screen: 3.33M valid trips, $90.3M in meter revenue, the 6 PM peak, the busiest day, weekday rhythm and the top pickup zones. |
+| **Demand & Time** | Day × hour heatmap, weekday/weekend rhythms, shift mix, peak windows and the 5 AM average-fare premium. |
+| **Fares & Zones** | Fare-vs-distance density, fare per mile by hour, a pickup-demand zone map, top zones, airport rate codes and tip behaviour. |
+| **Model Lab** | Holdout model card, actual-vs-predicted density, residuals, model comparison, feature importance and error by fare and distance band. |
+| **Fare Estimator** | A live total-amount estimate from the saved LightGBM model, with a typical range and a comparison group of similar real trips. |
+| **Insights** | A single briefing that pulls the strongest demand, fare, model and estimator signals into one readable section. |
+
+## The numbers
+
+| Metric | Value |
+|---|---:|
+| January trips in file | **3,475,204** |
+| Negative fare/total rows removed | **144,439** |
+| Valid January trips | **3,330,765** |
+| Meter revenue | **$90,335,708.80** |
+| Average total amount | **$27.12** |
+| Median total amount | **$20.35** |
+| Median trip distance | **1.67 mi** |
+| Solo riders | **82.05%** |
+| Peak hour | **6 PM · 253,993 trips** |
+| Busiest day | **Jan 16 · 134,129 trips · $3.64M** |
+| Weekday trips | **2,490,134** |
+| Weekend trips | **840,631** |
+| JFK + Newark | **98,694 trips · 2.96% of trips · 10.36% of revenue** |
+| Card tip rate | **14.6%** of card totals |
+
+The January file contains **3,475,204** trips. Removing **144,439** rows with a
+negative fare or negative total leaves **3,330,765** valid trips, which is the
+count used for the exploratory charts.
+
+The fare model is evaluated on the same 80/20 split as the case study
+(`random_state=42`) using the **3,229,937** model-eligible trips:
+
+| Holdout metric | Value |
+|---|---:|
+| MAE | **$2.6147** |
+| RMSE | **$4.5708** |
+| R² | **0.9484** |
+| Train R² | **0.9504** |
+| Train–test gap | **0.0020** |
+| Holdout rows | **645,988** |
+| Errors within $5 | **87.9%** |
+
+## Design
+
+The visual system is a taxi receipt crossed with a dispatch board:
+
+- Warm receipt-paper background (`#F3EADB`) with asphalt hero sections.
+- Taxi yellow (`#F5C518`), fare orange (`#D95D39`) and meter teal (`#237A6B`).
+- A checkered strip at the bottom of every hero and meter card.
+- Bebas Neue for display, Manrope for body copy, IBM Plex Mono for labels.
+- No chart gridlines, upper-right legends, clear titles and paired charts at
+  equal height.
+- Precomputed aggregates and a 350k-trip sample keep the app fast. Nothing is
+  trained or downloaded at runtime.
+
+## Run locally
+
+```bash
+python3 -m pip install -r requirements.txt
+python3 -m streamlit run app.py
+```
+
+The model artifacts are included in `models/`:
+
+- `taxi_model.joblib` — saved LightGBM model
+- `taxi_preprocessor.joblib` — fitted `ColumnTransformer`
+- `taxi_fallback.joblib` — portable scikit-learn fallback
+
+### macOS and `libomp`
+
+LightGBM needs OpenMP. If `import lightgbm` fails with a missing
+`libomp.dylib`, install it with Homebrew:
+
+```bash
+brew install libomp
+```
+
+The app catches a LightGBM load failure and uses the portable fallback so the
+rest of the dashboard still runs. The result card says which model is active.
+On Streamlit Community Cloud (Linux), the primary LightGBM model is used.
+
+The preprocessor was fitted with scikit-learn 1.5.2. The loader repairs a
+private `_RemainderColsList` class that newer scikit-learn releases removed, so
+the saved transformer still loads and produces the model's expected 21 columns.
+
+## Rebuild the assets
+
+```bash
+python3 build_assets.py
+```
+
+The script downloads the official TLC January 2025 parquet and zone lookup into
+`raw/`, applies the cleaning recipe, writes the compact CSVs/parquet files in
+`data/`, reproduces the holdout metrics and retrains the fallback. The raw file
+is intentionally ignored by Git.
+
+## Data and scope
+
+- Source: [NYC TLC Yellow Taxi Trip Data, January 2025](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page).
+- Zone geometry: TLC taxi zone shapefile, simplified into `data/zone_map.geojson`.
+- The overview and demand pages use the full valid January set after removing
+  negative fares and invalid totals.
+- Fare-shape and model charts use the model-eligible set: distance 0–100 mi,
+  total up to $300, and 1–6 passengers.
+- The target is `total_amount`, which includes tips, tolls and fees. Cash tips
+  are under-reported by nature.
+- The fare estimator assumes a January-2025-style trip. It does not know about
+  live traffic, weather or route choice.
+
+## Project structure
+
+```text
+nyc-taxi-dashboard/
+├── app.py                  # Overview entry point + navigation
+├── pages/
+│   ├── 1_Demand_and_Time.py
+│   ├── 2_Fares_and_Zones.py
+│   ├── 3_Model_Lab.py
+│   ├── 4_Fare_Estimator.py
+│   └── 5_Insights.py
+├── utils/
+│   ├── theme.py            # Palette, CSS, hero/KPI/meter components
+│   ├── charts.py           # Plotly builders
+│   ├── analysis.py         # Formatting and zone ranking
+│   ├── data_loader.py      # Cached data and model access
+│   └── modeling.py         # Feature construction and predictions
+├── data/                   # Aggregates, samples, zone map, model diagnostics
+├── models/                 # Saved model, preprocessor, fallback
+├── assets/logo.svg
+├── build_assets.py
+├── requirements.txt
+└── .streamlit/config.toml
+```
+
+---
+
+# Case study: NYC taxi fare analysis and prediction
 
 ## Project overview
 
